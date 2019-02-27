@@ -6,5 +6,6 @@ def printMenu():
     print("Press 2 to see all vertices")
     print("Press 3 to see if there is an edge from <x> to <y>")
     print("Press 4 to print the out degree and in degree of a vertex")
+    print("Press 5 to modify the cost of an edge")
     print("Press 9 to exit")
 

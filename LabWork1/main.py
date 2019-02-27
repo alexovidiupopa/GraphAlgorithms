@@ -5,7 +5,7 @@ class Console():
         self.__fileName = fileName 
         self.__commands = {"0":self.__loadFromFile,"1":self.__getNumberOfVertices,
                            "2":self.__printAllVertices,"3":self.__edgeFromXToY,
-                           "4":self.__getDegrees}
+                           "4":self.__getDegrees,"5":self.__modifyCost}
     def __loadFromFile(self):
         try:
             with open(self.__fileName,"r") as file:
@@ -39,6 +39,16 @@ class Console():
         x = int(input())
         print("Out degree: " + str(self.__graph.getOutDegree(x)))
         print("In degree: " + str(self.__graph.getInDegree(x)))
+        
+    def __modifyCost(self):
+        print("Give edge start:")
+        x = int(input())
+        print("Give edge end:")
+        y = int(input())
+        print("Give new cost:")
+        cost = int(input())
+        self.__graph.modifyEdgeCost(x,y,cost)
+        
     def run(self):
         while True: 
             print(">>")

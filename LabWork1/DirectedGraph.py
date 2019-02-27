@@ -55,6 +55,15 @@ class DirectedGraph(object):
     
     def getInDegree(self,x):
         return len(self.__dictIn[x])
+
+    
+    def modifyEdgeCost(self,x,y,c):
+        if (x,y) in self.__dictCosts: 
+            self.__dictCosts[(x,y)] = c 
+        else: 
+            raise Exception("No such edge")
+    
+    
     
     
     
