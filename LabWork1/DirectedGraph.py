@@ -1,4 +1,4 @@
-
+from ProgramException import myException
 class DirectedGraph(object):
     
     
@@ -39,24 +39,36 @@ class DirectedGraph(object):
         if self.isEdge(start,end):
             exception += "Already an edge" 
         if len(exception):
-            raise Exception(exception)
-        
+            raise myException(exception)
         self.__dictOut[start].append(end)
         self.__dictIn[end].append(start)
         self.__dictCosts[(start,end)] = cost
 
     def addVertex(self,x):
+        """adds the vertex x to the graph, as an isolated vertex
+            in case it already is a vertex, it raises an exception"""
         if x in self.parseKeys():
-            raise Exception("Already existing vertex")
-        self.__dictOut.append(x)
+            raise myException("Already existing vertex")
         self.__dictOut[x] = []
-        self.__dictIn.append(x)
         self.__dictIn[x] = []
         
+    def removeVertex(self,x):
+        """removes the vertex x from the graph
+           in case it doesn't exist it raises an exception """
+        
+        pass
+    
+    def removeEdge(self,x,y):
+        """removes the edge (x,y) from the graph
+            in case it doesn't exist it raises an exception"""
+        if not self.isEdge(x,y):
+            raise myException("This edge doesn't exist")
+        #del self.__dictCosts[(x,y)]
+    
+        pass
     def getNumberOfVertices(self):
         """return an integer containing the number of vertices in the graph"""
         return len(self.parseKeys())
-
     
     def getOutDegree(self,x):
         """return an integer representing the out degree of the vertex x"""
@@ -66,16 +78,11 @@ class DirectedGraph(object):
         """return an integer representing the in degree of the vertex x"""
         return len(self.__dictIn[x])
 
-    
     def modifyEdgeCost(self,x,y,c):
         if (x,y) in self.__dictCosts: 
             self.__dictCosts[(x,y)] = c 
         else: 
-            raise Exception("No such edge")
-    
-    
-    
-    
+            raise myException("No such edge")
     
     
     

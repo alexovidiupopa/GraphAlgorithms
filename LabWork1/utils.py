@@ -7,5 +7,10 @@ def printMenu():
     print("Press 3 to see if there is an edge from <x> to <y>")
     print("Press 4 to print the out degree and in degree of a vertex")
     print("Press 5 to modify the cost of an edge")
-    print("Press 9 to exit")
+    print("Graph modifiers:")
+    print("Press 6 to add a vertex")
+    print("Press 7 to add an edge")
+    print("Press 8 to remove a vertex")
+    print("Press 9 to remove an edge")
+    print("Type end to exit the program")
 

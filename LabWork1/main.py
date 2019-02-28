@@ -1,11 +1,15 @@
 from DirectedGraph import DirectedGraph
 from utils import printMenu
+from ProgramException import myException
+
 class Console():
     def __init__(self,fileName):
         self.__fileName = fileName 
         self.__commands = {"0":self.__loadFromFile,"1":self.__getNumberOfVertices,
                            "2":self.__printAllVertices,"3":self.__edgeFromXToY,
-                           "4":self.__getDegrees,"5":self.__modifyCost}
+                           "4":self.__getDegrees,"5":self.__modifyCost,
+                           "6":self.__addVertex, "7":self.__addEdge,
+                           "8":self.__removeVertex,"9":self.__removeEdge}
     def __loadFromFile(self):
         try:
             with open(self.__fileName,"r") as file:
@@ -49,16 +53,38 @@ class Console():
         cost = int(input())
         self.__graph.modifyEdgeCost(x,y,cost)
         
+    def __addVertex(self):
+        print("Give new vertex:")
+        x = int(input())
+        self.__graph.addVertex(x)
+    
+    def __addEdge(self):
+        print("Give edge start: ")
+        start = int(input())
+        print("Give edge end: ")
+        end = int(input())
+        print("Give edge cost: ")
+        cost = int(input())
+        self.__graph.addEdge(start, end, cost)
+    
+    def __removeEdge(self,x,y):
+        pass
+    
+    def __removeVertex(self):
+        pass
+    
     def run(self):
         while True: 
             print(">>")
             printMenu()
             cmd = input()
-            if cmd == "9": 
+            if cmd == "end": 
                 return
             elif cmd in self.__commands: 
+                try:    
                     self.__commands[cmd]()
-                
+                except myException as e: 
+                    print(e)
             else: 
                 print("Wrong cmd")
 c = Console("graph.txt")
