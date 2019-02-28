@@ -45,15 +45,25 @@ class DirectedGraph(object):
         self.__dictIn[end].append(start)
         self.__dictCosts[(start,end)] = cost
 
-    
+    def addVertex(self,x):
+        if x in self.parseKeys():
+            raise Exception("Already existing vertex")
+        self.__dictOut.append(x)
+        self.__dictOut[x] = []
+        self.__dictIn.append(x)
+        self.__dictIn[x] = []
+        
     def getNumberOfVertices(self):
+        """return an integer containing the number of vertices in the graph"""
         return len(self.parseKeys())
 
     
     def getOutDegree(self,x):
+        """return an integer representing the out degree of the vertex x"""
         return len(self.__dictOut[x])
     
     def getInDegree(self,x):
+        """return an integer representing the in degree of the vertex x"""
         return len(self.__dictIn[x])
 
     
