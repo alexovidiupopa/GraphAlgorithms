@@ -3,13 +3,15 @@ from utils import printMenu
 from ProgramException import myException
 
 class Console():
+        
     def __init__(self,fileName):
         self.__fileName = fileName 
         self.__commands = {"0":self.__loadFromFile,"1":self.__getNumberOfVertices,
                            "2":self.__printAllVertices,"3":self.__edgeFromXToY,
                            "4":self.__getDegrees,"5":self.__modifyCost,
                            "6":self.__addVertex, "7":self.__addEdge,
-                           "8":self.__removeVertex,"9":self.__removeEdge}
+                           "8":self.__removeVertex,"9":self.__removeEdge,
+                           "10":self.__copyGraph,"11":self.__printGraph}
     def __loadFromFile(self):
         try:
             with open(self.__fileName,"r") as file:
@@ -17,13 +19,14 @@ class Console():
                 firstLine = firstLine.strip().split()
                 vertices,edges = int(firstLine[0]),int(firstLine[1])
                 self.__graph = DirectedGraph(vertices)
-                for i in range(edges): 
+                for times in range(edges): 
                     line = file.readline()
                     line = line.strip().split()
                     start,end,cost = int(line[0]),int(line[1]),int(line[2])
                     self.__graph.addEdge(start, end, cost)
+            print("Graph loaded.")
         except IOError:
-            raise Exception("File Reading Error")
+            raise myException("File Reading Error")
         
     def __getNumberOfVertices(self):
         print(self.__graph.getNumberOfVertices())
@@ -33,30 +36,30 @@ class Console():
         
     def __edgeFromXToY(self):
         print("Give vertices x and y:")
-        x = int(input())
-        y = int(input())
+        start = int(input())
+        end = int(input())
         result = {True:"Yes",False:"No"}
-        print(result[self.__graph.isEdge(x, y)])
+        print(result[self.__graph.isEdge(start, end)])
         
     def __getDegrees(self):
         print("Give vertex:")
-        x = int(input())
-        print("Out degree: " + str(self.__graph.getOutDegree(x)))
-        print("In degree: " + str(self.__graph.getInDegree(x)))
+        vertex = int(input())
+        print("Out degree: " + str(self.__graph.getOutDegree(vertex)))
+        print("In degree: " + str(self.__graph.getInDegree(vertex)))
         
     def __modifyCost(self):
         print("Give edge start:")
-        x = int(input())
+        start = int(input())
         print("Give edge end:")
-        y = int(input())
+        end = int(input())
         print("Give new cost:")
         cost = int(input())
-        self.__graph.modifyEdgeCost(x,y,cost)
+        self.__graph.modifyEdgeCost(start,end,cost)
         
     def __addVertex(self):
         print("Give new vertex:")
-        x = int(input())
-        self.__graph.addVertex(x)
+        vertex = int(input())
+        self.__graph.addVertex(vertex)
     
     def __addEdge(self):
         print("Give edge start: ")
@@ -67,16 +70,36 @@ class Console():
         cost = int(input())
         self.__graph.addEdge(start, end, cost)
     
-    def __removeEdge(self,x,y):
-        pass
+    def __removeEdge(self):
+        print("Give edge start:")
+        start = int(input())
+        print("Give edge end:")
+        end = int(input())
+        self.__graph.removeEdge(start, end)
     
     def __removeVertex(self):
-        pass
-    
+        print("Give vertex you want to remove:")
+        vertex = int(input())
+        self.__graph.removeVertex(vertex)
+        
+    def __copyGraph(self):
+        print("Copying the graph...")
+        self.__graphCopy = self.__graph.copyGraph()
+        print("The graph is now copied and stored in __graphCopy")
+        
+    def __printGraphCopy(self):
+        print(self.__graphCopy.parseKeys())
+        
+    def __printGraph(self):
+        print("The vertices of the graph are: ")
+        print(self.__graph.parseKeys())
+        print("The edges of the graph are: ")
+        print(self.__graph.edges())
+        
     def run(self):
         while True: 
-            print(">>")
             printMenu()
+            print(">>")
             cmd = input()
             if cmd == "end": 
                 return
@@ -87,5 +110,6 @@ class Console():
                     print(e)
             else: 
                 print("Wrong cmd")
+    
 c = Console("graph.txt")
 c.run()
