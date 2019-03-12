@@ -1,4 +1,5 @@
 from ProgramException import myException
+import copy
 
 class DirectedGraph(object):
     
@@ -16,16 +17,16 @@ class DirectedGraph(object):
             self.__dictIn[i] = []
     
     def parseKeys(self):
-        """return all the vertex keys"""
-        return list(self.__dictOut.keys())
+        """returns a copy of all the vertex keys"""
+        return copy.deepcopy(self.__dictOut.keys())
     
     def parseIterableOut(self,x):
-        """return all out neighbours of x"""
-        return list(self.__dictOut[x])
+        """returns a copy of all out neighbours of x"""
+        return copy.deepcopy(self.__dictOut[x])
     
     def parseIterableIn(self,x):
-        """return all in neighbours of x"""
-        return list(self.__dictIn[x])
+        """return a copy of all in neighbours of x"""
+        return copy.deepcopy(self.__dictIn[x])
     
     def isEdge(self,start,end):
         """Returns True if there is an edge from x to y, False otherwise"""
@@ -83,7 +84,6 @@ class DirectedGraph(object):
         del self.__dictIn[x]
         self.__removeEdgesContainingX(x)
             
-    
     def removeEdge(self,x,y):
         """removes the edge (x,y) from the graph
             precondition: (x,y) needs to be a valid edge in the graph
@@ -106,6 +106,7 @@ class DirectedGraph(object):
             return len(self.__dictOut[x])
         except KeyError:
             raise myException("No such vertex")
+        
     def getInDegree(self,x):
         """return an integer representing the in degree of the vertex x
            precondition: x needs to be a valid vertex in the graph 
@@ -127,9 +128,9 @@ class DirectedGraph(object):
     def copyGraph(self):
         """returns a copy of the graph"""
         newGraph = DirectedGraph(10)
-        newGraph.__dictIn = dict(self.__dictIn)
-        newGraph.__dictOut = dict(self.__dictOut)
-        newGraph.__dictCosts = dict(self.__dictCosts)
+        newGraph.__dictIn = copy.deepcopy(self.__dictIn)
+        newGraph.__dictOut = copy.deepcopy(self.__dictOut)
+        newGraph.__dictCosts = copy.deepcopy(self.__dictCosts)
         return newGraph
     
     def edges(self):

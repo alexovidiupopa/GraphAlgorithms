@@ -11,7 +11,7 @@ class Console():
                            "4":self.__getDegrees,"5":self.__modifyCost,
                            "6":self.__addVertex, "7":self.__addEdge,
                            "8":self.__removeVertex,"9":self.__removeEdge,
-                           "10":self.__copyGraph,"11":self.__printGraph}
+                           "10":self.__copyGraph,"11":self.__printGraph,"12":self.__printGraphCopy}
     def __loadFromFile(self):
         try:
             with open(self.__fileName,"r") as file:
@@ -89,6 +89,7 @@ class Console():
         
     def __printGraphCopy(self):
         print(self.__graphCopy.parseKeys())
+        print(self.__graphCopy.edges())
         
     def __printGraph(self):
         print("The vertices of the graph are: ")
