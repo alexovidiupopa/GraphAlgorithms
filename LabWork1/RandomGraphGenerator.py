@@ -31,6 +31,9 @@ class RandomGraphGenerator():
         print(self.__graph.parseKeys())
         print("The edges of the graph are: ")
         print(self.__graph.edges())
+        print("Costs are:")
+        print(self.__graph.costs())
         
-rg = RandomGraphGenerator(7,5)
-rg.printGraph()
+#rg = RandomGraphGenerator(7,5)
+
+#rg.printGraph()

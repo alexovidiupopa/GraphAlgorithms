@@ -1,6 +1,7 @@
 from DirectedGraph import DirectedGraph
 from utils import printMenu
 from ProgramException import myException
+from RandomGraphGenerator import RandomGraphGenerator
 
 class Console():
         
@@ -11,7 +12,8 @@ class Console():
                            "4":self.__getDegrees,"5":self.__modifyCost,
                            "6":self.__addVertex, "7":self.__addEdge,
                            "8":self.__removeVertex,"9":self.__removeEdge,
-                           "10":self.__copyGraph,"11":self.__printGraph,"12":self.__printGraphCopy}
+                           "10":self.__copyGraph,"11":self.__printGraph,"12":self.__printGraphCopy,"13":self.__parseOut,
+                           "14":self.__isolatedVertices}
     def __loadFromFile(self):
         try:
             with open(self.__fileName,"r") as file:
@@ -52,6 +54,7 @@ class Console():
         start = int(input())
         print("Give edge end:")
         end = int(input())
+        print(self.__graph.retrieveCost(start, end))
         print("Give new cost:")
         cost = int(input())
         self.__graph.modifyEdgeCost(start,end,cost)
@@ -61,6 +64,16 @@ class Console():
         vertex = int(input())
         self.__graph.addVertex(vertex)
     
+    def __isolatedVertices(self):
+        print(self.__graph.allIsolatedVertices())
+        
+    def __parseOut(self):
+        print("Get vertex:")
+        x = int(input())
+        out = self.__graph.parseIterableOut(x)
+        print(out)
+        inZ = self.__graph.parseIterableIn(x)
+        print(inZ)
     def __addEdge(self):
         print("Give edge start: ")
         start = int(input())
@@ -111,6 +124,6 @@ class Console():
                     print(e)
             else: 
                 print("Wrong cmd")
-    
-c = Console("graph.txt")
+
+c = Console("graph10k.txt")
 c.run()

@@ -3,7 +3,6 @@ import copy
 
 class DirectedGraph(object):
     
-    
     def __init__(self,vertices):
         
         self.__dictIn = {}
@@ -18,16 +17,22 @@ class DirectedGraph(object):
     
     def parseKeys(self):
         """returns a copy of all the vertex keys"""
-        return copy.deepcopy(self.__dictOut.keys())
-    
+        return list(self.__dictOut.keys())
+        
     def parseIterableOut(self,x):
         """returns a copy of all out neighbours of x"""
-        return copy.deepcopy(self.__dictOut[x])
-    
+        try:
+            return list(self.__dictOut[x])
+        except KeyError:
+            raise myException("No such vertex")
+        
     def parseIterableIn(self,x):
         """return a copy of all in neighbours of x"""
-        return copy.deepcopy(self.__dictIn[x])
-    
+        try:
+            return list(self.__dictIn[x])
+        except KeyError:
+            raise myException("No such vertex")
+        
     def isEdge(self,start,end):
         """Returns True if there is an edge from x to y, False otherwise"""
         try:
@@ -40,15 +45,10 @@ class DirectedGraph(object):
            precondition: the edge mustn't already exist and the vertices need to be valid
                          in case it doesn't exist or the vertices aren't valid the error is handled and the user is informed"""
         exception = ""
-        if start not in self.parseKeys(): 
-            exception += "The vertex " + str(start) + " doesn't exist;"
-        if end not in self.parseKeys():
-            exception += "The vertex " + str(end) + " doesn't exist;"
         if self.isEdge(start,end):
             exception += "Already an edge;" 
         if len(exception):
             raise myException(exception)
-        
         self.__dictOut[start].append(end)
         self.__dictIn[end].append(start)
         self.__dictCosts[(start,end)] = cost
@@ -61,28 +61,35 @@ class DirectedGraph(object):
             raise myException("Already existing vertex")
         self.__dictOut[x] = []
         self.__dictIn[x] = []
-    
-    def __removeEdgesContainingX(self,x):
-        """just a helper function"""
-        while True: 
-            ok = False
-            for edges in self.__dictCosts:
-                if edges[0] == x or edges[1] == x:
-                    del self.__dictCosts[edges]
-                    ok = True
-                    break 
-            if not ok: 
-                return
-            
+        
+    def retrieveCost(self,start,end):
+        if self.isEdge(start,end):
+            return self.__dictCosts[(start,end)]
+        
     def removeVertex(self,x):
         """removes the vertex x from the graph
            precondition: x needs to exist in the graph as a vertex
                          if it doesn't, the error is handled and the user is informed """
         if x not in self.parseKeys():
             raise myException("Vertex doesn't exist")
+        for out in self.__dictOut[x]:
+            try: 
+                self.__dictIn[out].remove(x)
+                del self.__dictCosts[(x,out)]
+            except ValueError:
+                continue
+            except KeyError: 
+                continue
         del self.__dictOut[x]
+        for inVertex in self.__dictIn[x]:
+            try: 
+                self.__dictOut[x].remove(inVertex)
+                del self.__dictCosts[(inVertex,x)]
+            except ValueError: 
+                continue
+            except KeyError:
+                continue
         del self.__dictIn[x]
-        self.__removeEdgesContainingX(x)
             
     def removeEdge(self,x,y):
         """removes the edge (x,y) from the graph
@@ -113,6 +120,7 @@ class DirectedGraph(object):
                          in case it isn't, the error is handled and the user is informed"""
         try:
             return len(self.__dictIn[x])
+            
         except KeyError:
             raise myException("No such vertex")
 
@@ -125,6 +133,13 @@ class DirectedGraph(object):
         else: 
             raise myException("No such edge")
         
+    def allIsolatedVertices(self):
+        vertices = []
+        for k in self.parseKeys():
+            if self.__dictIn[k] == [] and self.__dictOut[k] == []:
+                vertices.append(k)
+        return vertices[:]
+    
     def copyGraph(self):
         """returns a copy of the graph"""
         newGraph = DirectedGraph(10)
@@ -140,3 +155,8 @@ class DirectedGraph(object):
             edgesList.append(edges)
         return edgesList[:]
         
+    def costs(self):
+        costs = []
+        for c in self.__dictCosts:
+            costs.append(self.__dictCosts[c])
+        return costs[:]
