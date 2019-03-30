@@ -72,23 +72,13 @@ class DirectedGraph(object):
                          if it doesn't, the error is handled and the user is informed """
         if x not in self.parseKeys():
             raise myException("Vertex doesn't exist")
-        for out in self.__dictOut[x]:
-            try: 
-                self.__dictIn[out].remove(x)
-                del self.__dictCosts[(x,out)]
-            except ValueError:
-                continue
-            except KeyError: 
-                continue
+        for y in self.__dictOut[x]: 
+                self.__dictIn[y].remove(x)
+                del self.__dictCosts[(x,y)]
         del self.__dictOut[x]
-        for inVertex in self.__dictIn[x]:
-            try: 
-                self.__dictOut[x].remove(inVertex)
-                del self.__dictCosts[(inVertex,x)]
-            except ValueError: 
-                continue
-            except KeyError:
-                continue
+        for y in self.__dictIn[x]: 
+                self.__dictOut[y].remove(x)
+                del self.__dictCosts[(y,x)]
         del self.__dictIn[x]
             
     def removeEdge(self,x,y):
@@ -124,12 +114,12 @@ class DirectedGraph(object):
         except KeyError:
             raise myException("No such vertex")
 
-    def modifyEdgeCost(self,x,y,c):
+    def modifyEdgeCost(self,start,end,c):
         """modifies the cost of an edge
         precondition: (x,y) needs to be a valid edge in the graph
                       if it isn't, the error is handled and the user is informed"""
-        if (x,y) in self.__dictCosts: 
-            self.__dictCosts[(x,y)] = c 
+        if (start,end) in self.__dictCosts: 
+            self.__dictCosts[(start,end)] = c 
         else: 
             raise myException("No such edge")
         
