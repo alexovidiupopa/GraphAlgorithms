@@ -125,5 +125,5 @@ class Console():
             else: 
                 print("Wrong cmd")
 
-c = Console("graph10k.txt")
+c = Console("graph1k.txt")
 c.run()
