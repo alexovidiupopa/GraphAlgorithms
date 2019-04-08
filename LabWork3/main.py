@@ -25,19 +25,26 @@ class Console():
             raise myException("File Reading Error")
        
     def __floydWarshall(self):
-        self.__floydWarshallMatrix = self.__graph.floydWarshall()
+        self.__floydWarshallMatrix,self.__floydWarshallPaths = self.__graph.floydWarshall()
         
     def __printLowestCostWalk(self):
         print("start vertex:")
-        x = int(input())
+        start = int(input())
         print("end vertex:")
-        y = int(input())
-        if x==y:
+        end = int(input())
+        if start==end:
             print("Cost from a vertex to itself is always 0")
-        elif self.__floydWarshallMatrix[x][y] == 99999: 
-            print("No possible walk from x to y.")
+        elif self.__floydWarshallMatrix[start][end] == 99999: 
+            print("No possible walk from start to end.")
         else: 
-            print(self.__floydWarshallMatrix[x][y])
+            print("Cost:",end='')
+            print(self.__floydWarshallMatrix[start][end])
+            print("Path:",end='')
+            path = [start]
+            while start!=end:
+                start = self.__floydWarshallPaths[start][end]
+                path.append(start)
+            print(path)
             
     def run(self):
         while True: 

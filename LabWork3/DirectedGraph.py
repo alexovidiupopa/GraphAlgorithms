@@ -120,24 +120,32 @@ class DirectedGraph(object):
         INFINITY = 99999
         vertices = self.getNumberOfVertices()
         
-        """initialize the distances matrix with infinity on every position"""
+        """initialize the distances matrix with infinity on every position
+           and the path matrix with -1 on every position"""
         distances = [[INFINITY] * vertices for i in range(vertices)]
+        paths = [[-1]*vertices for i in range(vertices)]
         
-        """initialize the (i,i) distances with 0"""
+        """initialize the (i,i) distances with 0
+           and the intersection (i,i) with i"""
         for i in range(vertices):
             distances[i][i]=0
-        
+            paths[i][i] = i
+            
         """add the corresponding costs to the matrix"""
         for (x,y) in self.__dictCosts:
             distances[x][y] = self.__dictCosts[(x,y)]
-            
+            paths[x][y] = y
+        
         """construct the floyd-warshall distances matrix using dynammic programming"""
         for k in range(vertices): 
             for i in range(vertices):
                 for j in range(vertices):
-                    distances[i][j] = min(distances[i][j], distances[i][k] + distances[k][j])
-        
-        return distances[:]
+                    if distances[i][k] + distances[k][j] < distances[i][j]:
+                        distances[i][j] = distances[i][k] + distances[k][j]
+                        paths[i][j] = paths[i][k]
+                        
+        """return the two matrices"""
+        return distances[:],paths[:]
     
     
     
