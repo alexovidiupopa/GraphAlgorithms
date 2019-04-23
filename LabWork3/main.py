@@ -1,6 +1,6 @@
 from DirectedGraph import DirectedGraph
 from ProgramException import myException
-
+import math
 class Console():
     
     def __init__(self,fileName):
@@ -34,12 +34,16 @@ class Console():
         end = int(input())
         if start==end:
             print("Cost from a vertex to itself is always 0")
-        elif self.__floydWarshallMatrix[start][end] == 99999: 
+        elif self.__floydWarshallMatrix[start][end] == math.inf: 
             print("No possible walk from start to end.")
         else: 
+            """Print the cost"""
             print("Cost:",end='')
             print(self.__floydWarshallMatrix[start][end])
+            
             print("Path:",end='')
+            """Reconstruct the path"""
+            
             path = [start]
             while start!=end:
                 start = self.__floydWarshallPaths[start][end]

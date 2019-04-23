@@ -1,5 +1,5 @@
 from ProgramException import myException
-
+import math
 class DirectedGraph(object):
     
     def __init__(self,vertices):
@@ -117,7 +117,7 @@ class DirectedGraph(object):
             raise myException("No such edge")
         
     def floydWarshall(self):
-        INFINITY = 99999
+        INFINITY = math.inf
         vertices = self.getNumberOfVertices()
         
         """initialize the distances matrix with infinity on every position
@@ -133,10 +133,10 @@ class DirectedGraph(object):
             
         """add the corresponding costs to the matrix"""
         for (x,y) in self.__dictCosts:
-            distances[x][y] = self.__dictCosts[(x,y)]
+            distances[x][y] = self.retrieveCost(x, y)
             paths[x][y] = y
         
-        """construct the floyd-warshall distances matrix using dynammic programming"""
+        """construct the floyd-warshall distances matrix and also the path matrix"""
         for k in range(vertices): 
             for i in range(vertices):
                 for j in range(vertices):
@@ -145,6 +145,7 @@ class DirectedGraph(object):
                         paths[i][j] = paths[i][k]
                         
         """return the two matrices"""
+        
         return distances[:],paths[:]
     
     

@@ -4,7 +4,7 @@ from myException import myException
 class Console:
     
     def __init__(self):
-        self.__fileName = "graph10k.txt"
+        self.__fileName = "graph.txt"
         self.__options={"1":self.__loadGraph, "2":self.__connectedComponentsWithDFS,
                         "3":self.__addEdge,"4":self.__addVertex}
             
