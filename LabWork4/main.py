@@ -1,5 +1,6 @@
 from DirectedGraph import DirectedGraph
 from ProgramException import myException
+import math
 class Console():
     
     def __init__(self,fileName):
@@ -28,15 +29,28 @@ class Console():
         if sortedDAG!=[]:
             print(sortedDAG)
             self.__sortedDAG = sortedDAG
+            print("Done computing topological sorting with dfs.")
         else: 
             print("Graph is not DAG")
     
     def __highestCostPath(self):
         print("Start:")
-        x = int(input())
+        source = int(input())
         print("End:")
-        y= int(input())
-        print(self.__graph.highestCostPath(self.__sortedDAG, x, y))
+        destination= int(input())
+        cost,prev=self.__graph.highestCostPath(self.__sortedDAG, source, destination)
+        if cost==-math.inf:
+            print("No possible path")
+            return
+        path = [destination]
+        while source!=destination:
+            destination = prev[destination]
+            path.append(destination)
+        print("Cost:")
+        print(cost)
+        print("Path:")
+        path.reverse()
+        print(path)
     def run(self):
         while True: 
             print(">>")

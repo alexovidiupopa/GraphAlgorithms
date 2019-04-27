@@ -120,12 +120,12 @@ class DirectedGraph(object):
         
     def __topologicalSortWithDFS(self,x,sorted,fullyProcessed,inProcess):
         inProcess.add(x)
-        for y in self.parseIterableIn(x):
-            if y in inProcess:
+        for inboundNeighbour in self.parseIterableIn(x):
+            if inboundNeighbour in inProcess:
                 return False
             else: 
-                if y not in fullyProcessed:
-                    ok = self.__topologicalSortWithDFS(y, sorted, fullyProcessed, inProcess)
+                if inboundNeighbour not in fullyProcessed:
+                    ok = self.__topologicalSortWithDFS(inboundNeighbour, sorted, fullyProcessed, inProcess)
                     if not ok:
                         return False
         inProcess.remove(x)
@@ -137,20 +137,22 @@ class DirectedGraph(object):
         sorted=[]
         fullyProcessed = set()
         inProcess=set()
-        for x in self.parseKeys():
-            if x not in fullyProcessed:
-                ok = self.__topologicalSortWithDFS(x, sorted, fullyProcessed, inProcess)
+        for vertex in self.parseKeys():
+            if vertex not in fullyProcessed:
+                ok = self.__topologicalSortWithDFS(vertex, sorted, fullyProcessed, inProcess)
                 if not ok:
                     return []
         return sorted[:]
         
     def highestCostPath(self,sorted,source,destination):
         distances=[-math.inf]*len(sorted)
+        prev=[-1]*len(sorted)
         distances[source]=0
-        for x in sorted:
-            if x==destination: 
+        for vertex in sorted:
+            if vertex==destination: 
                 break
-            for neighbours in self.parseIterableOut(x):
-                if distances[neighbours]<distances[x]+self.retrieveCost(x,neighbours):
-                    distances[neighbours]=distances[x]+self.retrieveCost(x,neighbours)
-        return distances[destination]
+            for outboundNeighbours in self.parseIterableOut(vertex):
+                if distances[outboundNeighbours]<distances[vertex]+self.retrieveCost(vertex,outboundNeighbours):
+                    distances[outboundNeighbours]=distances[vertex]+self.retrieveCost(vertex,outboundNeighbours)
+                    prev[outboundNeighbours]=vertex
+        return distances[destination],prev[:]
