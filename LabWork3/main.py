@@ -26,12 +26,20 @@ class Console():
        
     def __floydWarshall(self):
         self.__floydWarshallMatrix,self.__floydWarshallPaths = self.__graph.floydWarshall()
+        for i in range(len(self.__graph.parseKeys())):
+            print(self.__floydWarshallMatrix[i])
+        for i in range(len(self.__graph.parseKeys())):
+            print(self.__floydWarshallPaths[i])
+        print("Floyd-Warshall matrix computed.")
         
     def __printLowestCostWalk(self):
         print("start vertex:")
         start = int(input())
         print("end vertex:")
         end = int(input())
+        if start not in self.__graph.parseKeys() or end not in self.__graph.parseKeys():
+            print("No such vertices")
+            return
         if start==end:
             print("Cost from a vertex to itself is always 0")
         elif self.__floydWarshallMatrix[start][end] == math.inf: 
