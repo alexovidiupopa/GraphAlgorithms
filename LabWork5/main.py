@@ -11,7 +11,7 @@ class Console:
     def __printMenu(self):    
         print("Options: ")
         print("1-load graph")
-        print("2-print the connected components using depth first search")
+        print("2-print the approximate vertex cover (maximum 2*optimal number of vertices)")
         print("3-add edge")
         print("4-add vertex")
         print("exit-to quit the program")
@@ -36,8 +36,9 @@ class Console:
             raise myException("File Reading Error")
             
     def __vertexCover(self):
-        self.__graph.vertexCover()
-        pass
+        print("The vertices forming the approximate minimum vertex cover are: ")
+        print(self.__graph.approximateVertexCover())
+        
     def __addEdge(self):
         print("x:")
         x = int(input())
