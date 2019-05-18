@@ -5,15 +5,16 @@ class Console:
     
     def __init__(self):
         self.__fileName = "graph.txt"
-        self.__options={"1":self.__loadGraph, "2":self.__vertexCover,
-                        "3":self.__addEdge,"4":self.__addVertex}
+        self.__options={"1":self.__loadGraph, "2":self.__vertexCover, "3":self.__greedyVertexCover,
+                        "4":self.__addEdge,"5":self.__addVertex}
             
     def __printMenu(self):    
         print("Options: ")
         print("1-load graph")
         print("2-print the approximate vertex cover (maximum 2*optimal number of vertices)")
-        print("3-add edge")
-        print("4-add vertex")
+        print("3-print the approximate vertex cover (using greedy approach)")
+        print("4-add edge")
+        print("5-add vertex")
         print("exit-to quit the program")
     
     def __loadGraph(self):
@@ -36,8 +37,12 @@ class Console:
             raise myException("File Reading Error")
             
     def __vertexCover(self):
-        print("The vertices forming the approximate minimum vertex cover are: ")
+        print("(using non-optimal approach) The vertices forming the approximate minimum vertex cover are: ")
         print(self.__graph.approximateVertexCover())
+    
+    def __greedyVertexCover(self):
+        print("(using greedy approach) The vertices forming the approximate minimum vertex cover are:")    
+        print(self.__graph.greedyVertexCover())
         
     def __addEdge(self):
         print("x:")
