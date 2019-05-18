@@ -127,6 +127,7 @@ class DirectedGraph(object):
                 if inboundNeighbour not in fullyProcessed:
                     ok = self.__topologicalSortWithDFS(inboundNeighbour, sorted, fullyProcessed, inProcess)
                     if not ok:
+                        print(sorted)
                         return False
         inProcess.remove(x)
         sorted.append(x)
